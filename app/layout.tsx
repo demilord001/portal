@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs';
+import { Analytics } from '@vercel/analytics/react';
 import "./globals.css";
 import type { Metadata } from "next";
 
@@ -20,7 +21,7 @@ export default function RootLayout({
     return (
       <html lang="en">
         <body style={{ margin: 0, padding: 0 }}>
-          {children}
+          {children}<Analytics />
         </body>
       </html>
     );
@@ -30,7 +31,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body style={{ margin: 0, padding: 0 }}>
-          {children}
+          {children}<Analytics />
         </body>
       </html>
     </ClerkProvider>
