@@ -6,7 +6,15 @@ const isClerkConfigured =
   !!process.env.CLERK_SECRET_KEY;
 
 export default isClerkConfigured 
-  ? clerkMiddleware() 
+  ? clerkMiddleware(async (auth, req) => {
+      const { userId } = await auth();
+      if (req.nextUrl.pathname.startsWith('/chat') && !userId) {
+        return (await auth()).redirectToSignIn();
+      }
+      if (req.nextUrl.pathname === '/' && userId) {
+        return NextResponse.redirect(new URL('/chat', req.url));
+      }
+    }) 
   : () => NextResponse.next();
 
 export const config = {
