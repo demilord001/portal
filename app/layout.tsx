@@ -3,8 +3,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Next.js Premium Startup Boilerplate",
-  description: "Created using the ultimate interactive Next.js stack generator CLI.",
+  title: "Portal.AI — Ultimate access to next-gen assistance",
+  description: "A calm, intelligent space for thinking, making, and discovering.",
 };
 
 const isClerkConfigured = 
