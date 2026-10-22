@@ -2,6 +2,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Analytics } from '@vercel/analytics/react';
 import "./globals.css";
 import type { Metadata } from "next";
+import AccountControl from "@/components/account-control";
 
 export const metadata: Metadata = {
   title: "Portal.AI — Ultimate access to next-gen assistance",
@@ -21,7 +22,7 @@ export default function RootLayout({
     return (
       <html lang="en">
         <body style={{ margin: 0, padding: 0 }}>
-          {children}<Analytics />
+          {children}<AccountControl /><Analytics />
         </body>
       </html>
     );
@@ -31,7 +32,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body style={{ margin: 0, padding: 0 }}>
-          {children}<Analytics />
+          {children}<AccountControl /><Analytics />
         </body>
       </html>
     </ClerkProvider>

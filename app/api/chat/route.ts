@@ -14,11 +14,11 @@ async function getWebContext(query: string) {
 }
 
 export async function POST(request: NextRequest) {
-  const { messages = [] } = await request.json();
+  const { messages = [], preference = "", attachments = [] } = await request.json();
   const context = await getWebContext(messages.at(-1)?.content ?? "");
   const apiKey = process.env.XAI_API_KEY ?? process.env.OPENAI_API_KEY;
   if (!apiKey) return Response.json({ content: "I’m ready to help. Add XAI_API_KEY to connect Portal to its live intelligence layer." });
-  const upstream = await fetch(`${process.env.XAI_BASE_URL ?? "https://api.x.ai/v1"}/chat/completions`, { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" }, body: JSON.stringify({ model: process.env.AI_MODEL ?? "gpt-oss-120B", temperature: 0.7, stream: true, messages: [{ role: "system", content: SYSTEM_PROMPT + context }, ...messages] }) });
+  const upstream = await fetch(`${process.env.XAI_BASE_URL ?? "https://api.x.ai/v1"}/chat/completions`, { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" }, body: JSON.stringify({ model: process.env.AI_MODEL ?? "gpt-oss-120B", temperature: 0.7, stream: true, messages: [{ role: "system", content: SYSTEM_PROMPT + context + (preference ? "\nUser preferences: " + preference : "") + (attachments.length ? "\nAttached files: " + attachments.join(", ") : "") }, ...messages] }) });
   if (!upstream.ok || !upstream.body) return Response.json({ content: "I couldn’t reach the intelligence layer just now. Please try again in a moment." }, { status: 502 });
   return new Response(upstream.body, { headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache", Connection: "keep-alive" } });
 }
